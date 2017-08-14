@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import * as BooksAPI from './BooksAPI'
+import Book from './Book'
 
 class BookShelf extends Component {
   render() {
@@ -7,10 +7,12 @@ class BookShelf extends Component {
       <div className="list-books-content">
         <div>
           <div className="bookshelf">
-            <h2 className="bookshelf-title">Currently Reading</h2>
+            <h2 className="bookshelf-title">{this.props.title}</h2>
             <div className="bookshelf-books">
               <ol className="books-grid">
-                <Book />
+                {this.props.booklist.map((book) => (
+                  <Book key={book.id} book={book}/>
+                ))}
               </ol>
             </div>
           </div>
