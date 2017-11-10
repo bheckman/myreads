@@ -2,15 +2,9 @@ import React, { Component } from 'react'
 import * as BooksAPI from './BooksAPI'
 import Book from './Book'
 import { Link } from 'react-router-dom'
-// import PropTypes from 'prop-types'
 
 class Library extends Component {
-
-  // static propTypes = {
-  //  books: PropTypes.array.isRequired,
-  //  onShelfChange: PropTypes.func.isRequired
-  // }
-
+  
   state = {
     currentlyReading: [],
     wantToRead: [],
