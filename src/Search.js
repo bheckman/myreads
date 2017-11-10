@@ -3,23 +3,28 @@ import * as BooksAPI from './BooksAPI'
 import escapeRegExp from 'escape-string-regexp'
 import sortBy from 'sort-by'
 import { Link } from 'react-router-dom'
-
-// import Book from './Book'
+import Book from './Book'
 
 class Search extends Component {
   state = {
-    query: ''
+    query: '',
+    books: [],
   }
 
   updateQuery = (query) => {
     this.setState({ query:query.trim() })
   }
 
-  componentDidMount() {
-    BooksAPI.search(this.state.query)
+  componentDidUpdate(prevProps, prevState) {
+    BooksAPI.search(this.state.query, 20)
+    .then((data) => {
+      let books = data
+      this.setState({ books: books })
+    })
   }
 
   render() {
+    const { query, books } = this.state
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -39,13 +44,17 @@ class Search extends Component {
             <input
               type="text"
               placeholder="Search by title or author"
-              value={this.state.query}
+              value={query}
               onChange={(event) => this.updateQuery(event.target.value)}
             />
           </div>
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
+            {books.map((book) => (
+              <Book key={book.id} book={book} />
+              /* <Book key={book.id} onShelfChange={this.switchShelf.bind(this)} book={book} /> */ 
+            ))}
           </ol>
         </div>
       </div>
