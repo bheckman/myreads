@@ -2,25 +2,41 @@ import React, {Component} from 'react'
 import * as BooksAPI from './BooksAPI'
 import escapeRegExp from 'escape-string-regexp'
 import sortBy from 'sort-by'
+import _debounce from 'lodash/debounce'
 import { Link } from 'react-router-dom'
 import Book from './Book'
 
 class Search extends Component {
-  state = {
-    query: '',
-    books: [],
+  constructor(props) {
+    super(props);
+    this.state = {
+      query: '',
+      books: []
+    }
   }
 
   updateQuery = (query) => {
     this.setState({ query:query.trim() })
   }
+  
+  reset = (books) => {
+    this.setState({ books: [] })
+  }
 
-  componentDidUpdate(prevProps, prevState) {
-    BooksAPI.search(this.state.query, 20)
-    .then((data) => {
-      let books = data
-      this.setState({ books: books })
-    })
+  componentDidMount() {
+    this.setState({ query: "" })
+  }
+
+  componentDidUpdate() {
+    const query = this.state.query
+    BooksAPI.search(query, 20)
+      .then((data) => {
+        let books = data
+        this.setState({ books: books })
+      })
+      .catch((error) => {
+        this.reset()
+      })
   }
 
   render() {
