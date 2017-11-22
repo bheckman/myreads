@@ -17,6 +17,7 @@ class Search extends Component {
 
   updateQuery = (query) => {
     this.setState({ query:query.trim() })
+    this.searchBooks(query);
   }
   
   reset = (books) => {
@@ -27,9 +28,9 @@ class Search extends Component {
     this.setState({ query: "" })
   }
 
-  componentDidUpdate() {
-    const query = this.state.query
-    BooksAPI.search(query, 20)
+  searchBooks = (query) => {
+    if (query) {
+      BooksAPI.search(query, 20)
       .then((data) => {
         let books = data
         this.setState({ books: books })
@@ -37,6 +38,9 @@ class Search extends Component {
       .catch((error) => {
         this.reset()
       })
+    } else {
+      this.reset()
+    }
   }
 
   render() {
