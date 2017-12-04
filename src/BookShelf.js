@@ -10,7 +10,7 @@ function BookShelf (props) {
           <div className="bookshelf-books">
             <ol className="books-grid">
               {props.booklist.map((book) => (
-                <Book key={book.id} onShelfChange={props.switchShelf} book={book}/>
+                <Book key={book.id} book={book} onShelfChange={props.onShelfChange}/>
               ))}
             </ol>
           </div>
